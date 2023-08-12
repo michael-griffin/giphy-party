@@ -4,12 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Giphy Party!</title>
+  <script src="https://unpkg.com/jquery"></script>
+  <script src="app.js" defer="true"></script>
+  <link rel="stylsheet" href="style.css">
 </head>
 
 <body>
-
-<script src="https://unpkg.com/jquery"></script>
-<script src="app.js"></script>
+<form action="#" method="get">
+  <input class="input-search" type="text" placeholder="Search for gif">
+  <button id="submit-button">Search Giphy</button>
+</form>
+<button id="remove-button">remove images</button>
+<div class="image-container">
+  <!--img src elements to be added with JS-->
+</div>
 </body>
 
 </html>
