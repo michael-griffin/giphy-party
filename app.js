@@ -1,4 +1,5 @@
-console.log("Let's get this party started!");
+const URL_BASE = "http://api.giphy.com/v1/gifs/";
+const API_KEY = 'MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym';
 
 
 /* Your application should do the following:
@@ -9,46 +10,47 @@ Once the Giphy API has responded with data, append the GIF to the page
 Allow the user to search for as many GIFs as they would like and keep appending them to the page
 Allow the user to remove all of the GIFs by clicking a button
 Here is an example of what the application might look like:
- */
+
+*/
 
 
-//async function
-//FIXME: destructure handleformsubmit, make api_key global const, clear input field after search via jQuery
-// make fetchURL global (base url e.g. stop at v1/ ** const response = await fetch(`${GIPHY_BASE_URL}/gifs/search?${giphySearchParams}`);)
+
+//DONE: destructure handleformsubmit, make api_key global const,
+//clear input field after search via jQuery
+// make fetchURL global (base url e.g. stop at v1/gifs/
+//const response = await fetch(`${GIPHY_BASE_URL}/gifs/search?${giphySearchParams}`);)
 async function handleFormSubmit(evt) {
   evt.preventDefault();
 
-  //fetch call
-  let fetchURL = " http://api.giphy.com/v1/gifs/search?";
-  const searchTerm = $(".input-search").val(); //text?
-  const params = new URLSearchParams({
-    'q': searchTerm,
-    'api_key': 'MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym'
-  });
-
-  let response = await fetch(`${fetchURL}${params}`);
-  let parsed = await response.json()
-  //let parsed = JSON.parse(response);
-
-
-
-
-  // create random index integer to pass to responseImg
-  const randomGif = Math.floor(Math.random() * parsed.data.length);
-
-
-  const responseImg = parsed.data[randomGif].images.original.url;
-
-  //add img src= off of parsed url
-  const $imageElement = $(`<img src="${responseImg}">`);
-
-
-
   // append image to image-container
+  let imgURL = await fetchImage();
+  const $imageElement = $(`<img src="${imgURL}">`);
   $('.image-container').append($imageElement);
 }
 
-//Probably done.
+/**
+ * Grabs search term, and then fetches from database of gifs. Selects
+ * random gif and returns its url.
+ * @returns img URL
+ */
+async function fetchImage(){
+  let fetchURL = URL_BASE + 'search?'; "http://api.giphy.com/v1/gifs/search?";
+
+  const searchTerm = $(".input-search").val(''); //Get current value of input search, then clear it ('')
+  const params = new URLSearchParams({
+    q: searchTerm,
+    api_key: API_KEY
+  });
+
+  let response = await fetch(`${fetchURL}${params}`);
+  let parsed = await response.json();
+  //No need to parse json with JSON.parse?
+  const randomGif = Math.floor(Math.random() * parsed.data.length);
+  const responseImg = parsed.data[randomGif].images.original.url;
+  return responseImg;
+}
+
+
 function removeImages(){
   //target image-container with jQuery, then call empty?
   let $images = $('.image-container');
