@@ -13,6 +13,8 @@ Here is an example of what the application might look like:
 
 
 //async function
+//FIXME: destructure handleformsubmit, make api_key global const, clear input field after search via jQuery
+// make fetchURL global (base url e.g. stop at v1/ ** const response = await fetch(`${GIPHY_BASE_URL}/gifs/search?${giphySearchParams}`);)
 async function handleFormSubmit(evt) {
   evt.preventDefault();
 
@@ -28,11 +30,22 @@ async function handleFormSubmit(evt) {
   let parsed = await response.json()
   //let parsed = JSON.parse(response);
 
-  console.log('response: ', response);
-  console.log('parsed response is: ', parsed);
-  console.log(parsed.data[0].url);
+
+
+
+  // create random index integer to pass to responseImg
+  const randomGif = Math.floor(Math.random() * parsed.data.length);
+
+
+  const responseImg = parsed.data[randomGif].images.original.url;
 
   //add img src= off of parsed url
+  const $imageElement = $(`<img src="${responseImg}">`);
+
+
+
+  // append image to image-container
+  $('.image-container').append($imageElement);
 }
 
 //Probably done.
@@ -44,3 +57,4 @@ function removeImages(){
 
 $('#submit-button').on('click', handleFormSubmit);
 $('#remove-button').on('click', removeImages);
+
